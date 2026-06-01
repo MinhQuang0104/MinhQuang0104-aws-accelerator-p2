@@ -1,0 +1,8 @@
+# Chặn các file cấu hình local của Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# Chặn các file chứa biến bí mật (nếu bạn có dùng)
+*.tfvars
+*.tfvars.json
