@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
+# dùng để báo cho các lệnh cài package trên Ubuntu/Debian rằng: đừng hỏi tương tác, cứ chạy ở chế độ tự động.
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get update
