@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update
+apt-get install -y ca-certificates conntrack curl docker.io
+
+systemctl enable --now docker
+usermod -aG docker ubuntu
+
+KUBECTL_VERSION="$(curl -fsSL https://dl.k8s.io/release/stable.txt)"
+curl -fsSLo /usr/local/bin/kubectl "https://dl.k8s.io/release/$${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
+chmod 0755 /usr/local/bin/kubectl
+
+curl -fsSLo /usr/local/bin/minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+chmod 0755 /usr/local/bin/minikube
+
+# Publish the NodePort from the Docker-based Minikube node to the EC2 host.
+runuser -l ubuntu -c "minikube start --driver=docker --ports=${node_port}:${node_port}"
+
+for i in $(seq 1 60); do
+  if runuser -l ubuntu -c "kubectl get nodes" | grep -q " Ready"; then
+    touch /tmp/minikube-ready
+    exit 0
+  fi
+
+  sleep 10
+done
+
+echo "Minikube node did not become Ready" >&2
+exit 1
