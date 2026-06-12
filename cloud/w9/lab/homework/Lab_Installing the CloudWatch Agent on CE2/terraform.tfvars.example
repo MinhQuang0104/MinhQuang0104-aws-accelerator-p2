@@ -1,0 +1,7 @@
+aws_region    = "ap-southeast-1"
+project_name = "cloudwatch-agent-lab"
+instance_type = "t3.micro"
+
+# Optional SSH access. The key pair must already exist in the selected region.
+# key_name         = "my-key-pair"
+# ssh_allowed_cidr = "203.0.113.10/32"
