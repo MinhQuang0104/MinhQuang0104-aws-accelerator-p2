@@ -1,0 +1,8 @@
+Nhóm Developer: Chỉ được phép get, list, watch, create, update Pods và Deployments trong duy nhất namespace dev. Không được phép xóa (delete).
+
+Nhóm SRE: Có toàn quyền (Cluster-admin) trên toàn bộ Cluster.
+
+Nhóm Viewer: Chỉ có quyền read-only đối với tất cả tài nguyên (Pods, Services, Ingress...) trên toàn bộ các Namespaces.
+
+Một ServiceAccount tên là prometheus-sa trong namespace monitoring chỉ có quyền get, list, watch các metrics từ Pods và Nodes trên toàn cluster để làm hệ thống giám sát.
+Hãy giải thích ngắn gọn các điểm mấu chốt trong file YAML của bạn."*

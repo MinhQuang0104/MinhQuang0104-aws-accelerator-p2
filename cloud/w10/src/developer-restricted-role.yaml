@@ -1,0 +1,33 @@
+# Tạo sắn namespace để chưa role
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: developer-restricted-role
+  namespace: dev
+rules:
+- apiGroups: [""] # Core API group (Pods)
+  resources: ["pods", "pods/log", "pods/status"]
+  verbs: ["get", "list", "watch", "create", "update", "patch"]
+- apiGroups: ["apps"] # Apps API group (Deployments)
+  resources: ["deployments", "deployments/status"]
+  verbs: ["get", "list", "watch", "create", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: developer-restricted-binding
+  namespace: dev
+subjects:
+- kind: Group
+  name: "developer-group" # Ánh xạ từ OIDC Group của doanh nghiệp
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: developer-restricted-role
+  apiGroup: rbac.authorization.k8s.io
